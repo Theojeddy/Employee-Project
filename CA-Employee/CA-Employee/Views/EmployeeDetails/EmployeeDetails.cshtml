@@ -1,0 +1,189 @@
+﻿@using CA_Employee
+@using CA_Employee.Controllers
+@using CA_Employee.Models
+
+@{
+    ViewData["Title"] = "Employee Details";
+
+    Layout = "_Layout";
+
+    const string HR_DEPARTMENT = Employee.HR_DEPARTMENT;
+
+    string baseUrl = EmployeeDetailsController.ROUTE_EMPLOYEEDETAILS
+            .Replace("{id}", Model.ID.ToString());
+
+}
+
+@model Employee
+<div class="row mb-3">
+    <div class="text-left">
+        <a href="/LandingPage/LandingPage" class="btn btn-secondary">Back to Landing Page</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="text-center">
+            <h1>Employee Details</h1>
+        </div>
+        @* Starting form, pointing at the method and the controller *@
+        @using (Html.BeginForm("SubmitEmployee", "EmployeeDetails"))
+        {
+            @Html.HiddenFor(model => model.ID)
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee FullName:</h4>
+                </div>
+                <div class="col-md-6">
+                    <p>@Model.FullName</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee First Name:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Last Name:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Email:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control email-control" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Address:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Department:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.Department, new SelectList(new List<string> { Employee.HR_DEPARTMENT, Employee.DEV_DEPARTMENT }), new { @class = "form-control", id = "department-dropdown" })
+                </div>
+            </div>
+            <div class="row mb-3" id="role-row">
+                <div class="col-md-6">
+                    <h4>Employee Role:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.Role, new SelectList(new List<string> { Employee.JUNIOR_DEVELOPER_ROLE, Employee.SENIOR_DEVELOPER_ROLE }), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Actions:</h4>
+                </div>
+                <div class="col-md-6">
+                    @for (int i = 0; i < Model.Tasks.Count; i++)
+                    {
+                        <div class="mb-3">
+                            @Html.TextBoxFor(model => model.Tasks[i], new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Tasks[i], "", new { @class = "text-danger" })
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Start Date:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.StartDate,"{0:dd/MM/yyyy}" , new { @class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee End Date:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.EndDate,"{0:dd/MM/yyyy}" , new { @class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Holidays:</h4>
+                </div>
+                <div class="col-md-6">
+                    @for (int i = 0; i < Model.Holidays.Count; i++)
+                    {
+                        <div class="mb-3">
+                            @Html.TextBoxFor(model => model.Holidays[i],"{0:dd/MM/yyyy}" , new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Holidays[i], "", new { @class = "text-danger" })
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Working today?</h4>
+                </div>
+                <div class="col-md-6">
+                    @if (Model.IsWorking)
+                    {
+                        <p>Yes</p>
+                    }
+                    else
+                    {
+                        <p>No</p>
+                    }
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h4>Employee Salary Band:</h4>
+                </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => model.SalaryBand, new SelectList(new List<string> { Employee.SALARY_BAND_A, Employee.SALARY_BAND_B, Employee.SALARY_BAND_C, Employee.SALARY_BAND_D }), new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <button type="submit" onclick="@baseUrl" class="btn btn-primary">Submit</button>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        // This statement runs when the page is rendered.
+        $(function () {
+            // On page load, check the value of department to hide or show the role dropdown.
+            $('#department-dropdown').on('change', toggleRole);
+            toggleRole();
+        });
+
+        // Checks if the Department is HR and hides or shows role if it is true or false.
+        function toggleRole() {
+            var selectedDepartment = $('#department-dropdown').val();
+            var hrDepartment = '@HR_DEPARTMENT';
+            if (selectedDepartment === hrDepartment) {
+                $('#role-row').hide();
+            } else {
+                $('#role-row').show();
+            }
+        }
+    </script>
+}
