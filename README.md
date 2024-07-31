@@ -4,6 +4,6 @@
 
 ## Table of Contents
 
-* Employee selection*
-* Employee Information*
-* Saving and submitting employee information*
+* Employee selection
+* Employee Information
+* Saving and submitting employee information
